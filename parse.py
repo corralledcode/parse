@@ -1,4 +1,5 @@
 import re
+from xml.etree.ElementTree import tostring
 
 
 def parse_from_edgelist(filenamein, filenameout):
@@ -14,7 +15,16 @@ def parse_from_edgelist(filenamein, filenameout):
                     fout.write("\n")
                     fout.write(" */\n")
                     line = fin.readline()
+                    pattern = re.compile(r'(\d+) (\d+)')
+                    match = pattern.match(line)
+                    vcount = match.group(1)
+                    for v in range(int(vcount)):
+                        vstr = "a"+str(v)
+                        fout.write(vstr)
+                        fout.write(" ")
+                    fout.write("END ")
                     for line in fin:
+                        fout.write("\n")
                         pattern = re.compile(r'(\d+) (\d+)')
                         match = pattern.findall(line)
                         if match:
@@ -24,9 +34,8 @@ def parse_from_edgelist(filenamein, filenameout):
                                 fout.write(" ")
                         else:
                             break
-                        fout.write("\n")
 
-                    fout.write("END END\n\n")
+                    fout.write("END\n\n")
 
 
 
@@ -37,5 +46,6 @@ parse_from_edgelist('graph5c.dat',"graph5c.fcg")
 parse_from_edgelist('graph6c.dat',"graph6c.fcg")
 parse_from_edgelist('graph7c.dat',"graph7c.fcg")
 parse_from_edgelist('graph8c.dat',"graph8c.fcg")
+parse_from_edgelist('graph9c.dat',"graph9c.fcg")
 
 
